@@ -1,6 +1,9 @@
+import pytest
+
 import olstorage
 
 
+@pytest.mark.e2e
 def test_core_module() -> None:
     settings = olstorage.StorageCoreSettings(storage_settings={"type": "MEMORY"})
     core = olstorage.StorageCore.create(settings=settings)

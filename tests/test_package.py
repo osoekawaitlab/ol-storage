@@ -9,3 +9,11 @@ def test_olstorage_has_version() -> None:
 
 def test_olstorage_core() -> None:
     assert olstorage.StorageCore == olstorage.core.StorageCore
+
+
+def test_olstorage_exports_some_models() -> None:
+    assert olstorage.Document == olstorage.models.Document
+
+
+def test_olstorage_exports_settings() -> None:
+    assert olstorage.StorageCoreSettings == olstorage.settings.StorageCoreSettings

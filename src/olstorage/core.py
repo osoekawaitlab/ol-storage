@@ -22,4 +22,4 @@ class StorageCore:
         return self._storage.create_document(document=document)
 
     def get(self, document_id: DocumentId) -> Document:
-        raise NotImplementedError
+        return self._storage.get(document_id=document_id)

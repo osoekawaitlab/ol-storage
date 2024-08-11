@@ -11,3 +11,7 @@ class BaseStorage(ABC):
     @abstractmethod
     def create_document(self, document: Document) -> Document:
         pass
+
+    @abstractmethod
+    def get(self, document_id: DocumentId) -> Document:
+        pass

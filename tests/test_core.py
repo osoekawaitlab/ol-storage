@@ -1,7 +1,9 @@
 from pytest_mock import MockerFixture
 
 from olstorage.core import StorageCore
+from olstorage.models import Document
 from olstorage.settings import StorageCoreSettings
+from olstorage.storages.base import BaseStorage
 
 
 def test_core_create(mocker: MockerFixture) -> None:
@@ -10,3 +12,14 @@ def test_core_create(mocker: MockerFixture) -> None:
     actual = StorageCore.create(settings=settings)
     assert actual.storage == create_storage.return_value
     create_storage.assert_called_once_with(settings=settings.storage_settings)
+
+
+def test_core_save_new_document(mocker: MockerFixture) -> None:
+    storage = mocker.MagicMock(spec=BaseStorage)
+    storage.__contains__.return_value = False
+    sut = StorageCore(storage=storage)
+    document = Document(content="content")
+    actual = sut.save(document=document)
+    assert actual == storage.create_document.return_value
+    storage.__contains__.assert_called_once_with(document.id)
+    storage.create_document.assert_called_once_with(document=document)

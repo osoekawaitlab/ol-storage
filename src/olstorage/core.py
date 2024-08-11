@@ -17,7 +17,9 @@ class StorageCore:
         return cls(storage=create_storage(settings=settings.storage_settings))
 
     def save(self, document: Document) -> Document:
-        raise NotImplementedError
+        if document.id in self._storage:
+            raise NotImplementedError
+        return self._storage.create_document(document=document)
 
     def get(self, document_id: DocumentId) -> Document:
         raise NotImplementedError

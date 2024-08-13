@@ -10,16 +10,30 @@ class BaseSettings(OltlBaseSettings):
     model_config = SettingsConfigDict(env_prefix="OLSTORAGE_")
 
 
-class StorageType(str, Enum):
+class BackendType(str, Enum):
     MEMORY = "MEMORY"
+
+
+class BaseBackendSettings(BaseSettings):
+    type: BackendType
+
+
+class MemoryStorageSettings(BaseBackendSettings):
+    type: Literal[BackendType.MEMORY] = BackendType.MEMORY
+
+
+BackendSettings = Annotated[MemoryStorageSettings, Field(discriminator="type")]
+
+
+class StorageType(str, Enum):
+    BLOB = "BLOB"
+    KEY_VALUE = "KEY_VALUE"
+    VECTOR = "VECTOR"
 
 
 class BaseStorageSettings(BaseSettings):
     type: StorageType
-
-
-class MemoryStorageSettings(BaseStorageSettings):
-    type: Literal[StorageType.MEMORY] = StorageType.MEMORY
+    backend_settings: BackendSettings
 
 
 StorageSettings = Annotated[MemoryStorageSettings, Field(discriminator="type")]

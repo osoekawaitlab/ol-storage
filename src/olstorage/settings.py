@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Annotated, Literal
+from typing import Annotated, List, Literal
 
 from oltl.settings import BaseSettings as OltlBaseSettings
 from pydantic import Field
@@ -18,26 +18,43 @@ class BaseBackendSettings(BaseSettings):
     type: BackendType
 
 
-class MemoryStorageSettings(BaseBackendSettings):
+class MemoryBackendSettings(BaseBackendSettings):
     type: Literal[BackendType.MEMORY] = BackendType.MEMORY
 
 
-BackendSettings = Annotated[MemoryStorageSettings, Field(discriminator="type")]
+BackendSettings = Annotated[MemoryBackendSettings, Field(discriminator="type")]
 
 
-class StorageType(str, Enum):
-    BLOB = "BLOB"
-    KEY_VALUE = "KEY_VALUE"
-    VECTOR = "VECTOR"
+class LayerType(str, Enum):
+    GENESIS = "GENESIS"
+    NEXUS = "NEXUS"
 
 
-class BaseStorageSettings(BaseSettings):
-    type: StorageType
+class BaseLayerSettings(BaseSettings):
+    layer_type: LayerType
     backend_settings: BackendSettings
 
 
-StorageSettings = Annotated[MemoryStorageSettings, Field(discriminator="type")]
+class GenesisLayerSettings(BaseLayerSettings):
+    layer_type: Literal[LayerType.GENESIS] = LayerType.GENESIS
 
 
-class StorageCoreSettings(BaseSettings):
-    storage_settings: StorageSettings
+class NexusLayerType(str, Enum):
+    KVS = "KVS"
+
+
+class BaseNexusLayerSettings(BaseLayerSettings):
+    layer_type: Literal[LayerType.NEXUS] = LayerType.NEXUS
+    nexus_type: NexusLayerType
+
+
+class KvsNexusLayerSettings(BaseNexusLayerSettings):
+    nexus_type: Literal[NexusLayerType.KVS] = NexusLayerType.KVS
+
+
+NexusLayerSettings = Annotated[KvsNexusLayerSettings, Field(discriminator="nexus_type")]
+
+
+class StorageSettings(BaseSettings):
+    genesis_layer_settings: GenesisLayerSettings
+    nexus_layers_settings: List[NexusLayerSettings]

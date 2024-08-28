@@ -1,7 +1,15 @@
-from oltl import BaseEntity, BaseUpdateTimeAwareModel, Id
+from oltl import BaseEntity, BaseUpdateTimeAwareModel, Id, TrimmedStringMixIn
 
 
-class DocumentId(Id):
+class DataId(Id):
+    pass
+
+
+class DocumentId(DataId):
+    pass
+
+
+class Key(TrimmedStringMixIn):
     pass
 
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Annotated, List, Literal
+from typing import Annotated, Dict, Literal
 
 from oltl.settings import BaseSettings as OltlBaseSettings
 from pydantic import Field
@@ -25,26 +25,18 @@ class MemoryBackendSettings(BaseBackendSettings):
 BackendSettings = Annotated[MemoryBackendSettings, Field(discriminator="type")]
 
 
-class LayerType(str, Enum):
-    GENESIS = "GENESIS"
-    NEXUS = "NEXUS"
-
-
-class BaseLayerSettings(BaseSettings):
-    layer_type: LayerType
+class BaseBackendedSettings(BaseSettings):
     backend_settings: BackendSettings
 
 
-class GenesisLayerSettings(BaseLayerSettings):
-    layer_type: Literal[LayerType.GENESIS] = LayerType.GENESIS
+class GenesisLayerSettings(BaseBackendedSettings): ...
 
 
 class NexusLayerType(str, Enum):
     KVS = "KVS"
 
 
-class BaseNexusLayerSettings(BaseLayerSettings):
-    layer_type: Literal[LayerType.NEXUS] = LayerType.NEXUS
+class BaseNexusLayerSettings(BaseBackendedSettings):
     nexus_type: NexusLayerType
 
 
@@ -55,6 +47,6 @@ class KvsNexusLayerSettings(BaseNexusLayerSettings):
 NexusLayerSettings = Annotated[KvsNexusLayerSettings, Field(discriminator="nexus_type")]
 
 
-class StorageSettings(BaseSettings):
+class StorageCoreSettings(BaseSettings):
     genesis_layer_settings: GenesisLayerSettings
-    nexus_layers_settings: List[NexusLayerSettings]
+    nexus_layers_settings: Dict[NexusLayerType, NexusLayerSettings]

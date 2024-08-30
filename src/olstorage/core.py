@@ -1,25 +1,29 @@
-from .models import Document, DocumentId
-from .settings import StorageCoreSettings
-from .storages.base import BaseStorage
-from .storages.factory import create_storage
+from typing import Dict
+
+from .genesis_layer import GenesisLayer, create_genesis_layer
+from .nexus_layers.base import BaseNexusLayer
+from .nexus_layers.factory import create_nexus_layer
+from .settings import NexusLayerType, StorageCoreSettings
 
 
 class StorageCore:
-    def __init__(self, storage: BaseStorage) -> None:
-        self._storage = storage
+    def __init__(self, genesis_layer: GenesisLayer, nexus_layers: Dict[NexusLayerType, BaseNexusLayer]):
+        self._genesis_layer = genesis_layer
+        self._nexus_layers = nexus_layers
 
     @property
-    def storage(self) -> BaseStorage:
-        return self._storage
+    def genesis_layer(self) -> GenesisLayer:
+        return self._genesis_layer
+
+    @property
+    def nexus_layers(self) -> Dict[NexusLayerType, BaseNexusLayer]:
+        return self._nexus_layers
 
     @classmethod
     def create(cls, settings: StorageCoreSettings) -> "StorageCore":
-        return cls(storage=create_storage(settings=settings.storage_settings))
-
-    def save(self, document: Document) -> Document:
-        if document.id in self._storage:
-            raise NotImplementedError
-        return self._storage.create_document(document=document)
-
-    def get(self, document_id: DocumentId) -> Document:
-        return self._storage.get(document_id=document_id)
+        genesis_layer = create_genesis_layer(settings=settings.genesis_layer_settings)
+        nexus_layers = {
+            layer_type: create_nexus_layer(settings=layer_settings)
+            for layer_type, layer_settings in settings.nexus_layers_settings.items()
+        }
+        return cls(genesis_layer=genesis_layer, nexus_layers=nexus_layers)

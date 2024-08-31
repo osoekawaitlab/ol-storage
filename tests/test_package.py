@@ -17,3 +17,7 @@ def test_olstorage_exports_some_models() -> None:
 
 def test_olstorage_exports_settings() -> None:
     assert olstorage.StorageCoreSettings == olstorage.settings.StorageCoreSettings
+    assert olstorage.NexusLayerType == olstorage.settings.NexusLayerType
+    assert olstorage.GenesisLayerSettings == olstorage.settings.GenesisLayerSettings
+    assert olstorage.MemoryBackendSettings == olstorage.settings.MemoryBackendSettings
+    assert olstorage.KvsNexusLayerSettings == olstorage.settings.KvsNexusLayerSettings

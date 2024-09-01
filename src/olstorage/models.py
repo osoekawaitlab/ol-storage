@@ -1,4 +1,4 @@
-from typing import Dict, Set
+from typing import Dict
 
 from oltl import (
     BaseBytes,
@@ -8,7 +8,6 @@ from oltl import (
     NonEmptyStringMixIn,
     RegexSubstitutedStringMixIn,
 )
-from pydantic import Field
 
 
 class NonEmptySingleLineTrimmedString(NonEmptyStringMixIn, RegexSubstitutedStringMixIn):
@@ -63,4 +62,3 @@ class DataContent(BaseBytes):
 
 class Data(BaseEntity[DataId], BaseUpdateTimeAwareModel):  # type: ignore[misc]
     content: DataContent
-    tags: Set[Tag] = Field(default_factory=set)

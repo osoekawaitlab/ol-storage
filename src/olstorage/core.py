@@ -30,7 +30,7 @@ class StorageCore:
         return cls(genesis_layer=genesis_layer, nexus_layers=nexus_layers)
 
     def save(self, data: Data) -> Data:
-        raise NotImplementedError
+        return self.genesis_layer.save(data)
 
     def get(self, data_id: DataId) -> Data:
         raise NotImplementedError

@@ -1,5 +1,5 @@
 from .core import StorageCore
-from .models import Document
+from .models import Data, Tag
 from .settings import (
     GenesisLayerSettings,
     KvsNexusLayerSettings,
@@ -13,7 +13,8 @@ __version__ = "0.1.0"
 
 __all__ = [
     "StorageCoreSettings",
-    "Document",
+    "Data",
+    "Tag",
     "StorageCore",
     "GenesisLayerSettings",
     "MemoryBackendSettings",

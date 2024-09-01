@@ -12,7 +12,8 @@ def test_olstorage_core() -> None:
 
 
 def test_olstorage_exports_some_models() -> None:
-    assert olstorage.Document == olstorage.models.Document
+    assert olstorage.Data == olstorage.models.Data
+    assert olstorage.Tag == olstorage.models.Tag
 
 
 def test_olstorage_exports_settings() -> None:

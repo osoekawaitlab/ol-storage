@@ -1,6 +1,7 @@
 from typing import Dict
 
 from .genesis_layer import GenesisLayer, create_genesis_layer
+from .models import Data, DataId
 from .nexus_layers.base import BaseNexusLayer
 from .nexus_layers.factory import create_nexus_layer
 from .settings import NexusLayerType, StorageCoreSettings
@@ -27,3 +28,9 @@ class StorageCore:
             for layer_type, layer_settings in settings.nexus_layers_settings.items()
         }
         return cls(genesis_layer=genesis_layer, nexus_layers=nexus_layers)
+
+    def save(self, data: Data) -> Data:
+        raise NotImplementedError
+
+    def get(self, data_id: DataId) -> Data:
+        raise NotImplementedError

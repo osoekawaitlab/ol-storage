@@ -4,7 +4,7 @@ import olstorage
 
 
 @pytest.mark.e2e
-def test_core_module_has_document_storage() -> None:
+def test_core_module_has_data_storage() -> None:
     settings = olstorage.StorageCoreSettings(
         genesis_layer_settings=olstorage.GenesisLayerSettings(backend_settings=olstorage.MemoryBackendSettings()),
         nexus_layers_settings={
@@ -14,8 +14,8 @@ def test_core_module_has_document_storage() -> None:
         },
     )
     core = olstorage.StorageCore.create(settings=settings)
-    document = olstorage.Document(content="Hello, World!")
-    saved_document = core.save(document)
-    assert saved_document.content == "Hello, World!"
-    actual = core.get(saved_document.id)
-    assert actual.content == "Hello, World!"
+    data = olstorage.Data(content=b"Hello, World!")
+    saved_data = core.save(data)
+    assert saved_data.content == b"Hello, World!"
+    actual = core.get(saved_data.id)
+    assert actual.content == b"Hello, World!"

@@ -13,7 +13,10 @@ class GenesisLayer:
         return self._backend
 
     def save(self, data: Data) -> Data:
-        raise NotImplementedError
+        if not self.backend.has_data(data_id=data.id):
+            self.backend.add_data(data=data)
+            self.backend.commit()
+        return data
 
 
 def create_genesis_layer(settings: GenesisLayerSettings) -> GenesisLayer:

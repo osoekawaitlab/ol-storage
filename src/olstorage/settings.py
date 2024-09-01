@@ -37,14 +37,14 @@ class NexusLayerType(str, Enum):
 
 
 class BaseNexusLayerSettings(BaseBackendedSettings):
-    nexus_type: NexusLayerType
+    type: NexusLayerType
 
 
 class KvsNexusLayerSettings(BaseNexusLayerSettings):
-    nexus_type: Literal[NexusLayerType.KVS] = NexusLayerType.KVS
+    type: Literal[NexusLayerType.KVS] = NexusLayerType.KVS
 
 
-NexusLayerSettings = Annotated[KvsNexusLayerSettings, Field(discriminator="nexus_type")]
+NexusLayerSettings = Annotated[KvsNexusLayerSettings, Field(discriminator="type")]
 
 
 class StorageCoreSettings(BaseSettings):

@@ -9,6 +9,6 @@ from olstorage.settings import (
 
 
 def test_create_nexus_layer_raises_value_error_for_unknown_layer_type() -> None:
-    settings = BaseNexusLayerSettings(nexus_type=NexusLayerType.KVS, backend_settings=MemoryBackendSettings())
+    settings = BaseNexusLayerSettings(type=NexusLayerType.KVS, backend_settings=MemoryBackendSettings())
     with pytest.raises(ValueError):
         factory.create_nexus_layer(settings=settings)  # type: ignore[arg-type]

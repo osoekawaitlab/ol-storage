@@ -7,11 +7,7 @@ import olstorage
 def test_core_module_has_data_storage() -> None:
     settings = olstorage.StorageCoreSettings(
         genesis_layer_settings=olstorage.GenesisLayerSettings(backend_settings=olstorage.MemoryBackendSettings()),
-        nexus_layers_settings={
-            olstorage.NexusLayerType.KVS: olstorage.KvsNexusLayerSettings(
-                backend_settings=olstorage.MemoryBackendSettings()
-            )
-        },
+        nexus_layers_settings={},
     )
     core = olstorage.StorageCore.create(settings=settings)
     data = olstorage.Data(content=b"Hello, World!")

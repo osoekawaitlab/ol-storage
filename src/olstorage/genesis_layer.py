@@ -1,6 +1,6 @@
 from .backends.base import BaseBackend
 from .backends.factory import create_backend
-from .models import Data
+from .models import Data, DataId
 from .settings import GenesisLayerSettings
 
 
@@ -17,6 +17,12 @@ class GenesisLayer:
             self.backend.add_data(data=data)
             self.backend.commit()
         return data
+
+    def has_data(self, data_id: DataId) -> bool:
+        raise NotImplementedError
+
+    def get_data(self, data_id: DataId) -> Data:
+        raise NotImplementedError
 
 
 def create_genesis_layer(settings: GenesisLayerSettings) -> GenesisLayer:

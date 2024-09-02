@@ -1,5 +1,6 @@
 from typing import Dict
 
+from .errors import DataNotFoundError
 from .genesis_layer import GenesisLayer, create_genesis_layer
 from .models import Data, DataId
 from .nexus_layers.base import BaseNexusLayer
@@ -33,4 +34,6 @@ class StorageCore:
         return self.genesis_layer.save(data)
 
     def get(self, data_id: DataId) -> Data:
-        raise NotImplementedError
+        if not self.genesis_layer.has_data(data_id=data_id):
+            raise DataNotFoundError(f"Data with id {data_id} not found")
+        return self.genesis_layer.get_data(data_id=data_id)

@@ -2,7 +2,7 @@ from pytest_mock import MockerFixture
 
 from olstorage import genesis_layer
 from olstorage.backends.base import BaseBackend
-from olstorage.models import Data
+from olstorage.models import Data, DataId
 from olstorage.settings import GenesisLayerSettings, MemoryBackendSettings
 
 
@@ -24,3 +24,12 @@ def test_genesis_layer_save_new_data(mocker: MockerFixture) -> None:
     backend.has_data.assert_called_once_with(data_id=data.id)
     backend.add_data.assert_called_once_with(data=data)
     backend.commit.assert_called_once()
+
+
+def test_genesis_layer_has_data(mocker: MockerFixture) -> None:
+    backend = mocker.Mock(spec=BaseBackend)
+    backend.has_data.return_value = True
+    data_id = DataId.generate()
+    genesis_layer_instance = genesis_layer.GenesisLayer(backend=backend)
+    assert genesis_layer_instance.has_data(data_id=data_id)
+    backend.has_data.assert_called_once_with(data_id=data_id)

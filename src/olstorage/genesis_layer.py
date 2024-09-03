@@ -19,7 +19,7 @@ class GenesisLayer:
         return data
 
     def has_data(self, data_id: DataId) -> bool:
-        raise NotImplementedError
+        return self.backend.has_data(data_id=data_id)
 
     def get_data(self, data_id: DataId) -> Data:
         raise NotImplementedError

@@ -26,6 +26,7 @@ classifiers = [
 
 dependencies = [
     "oltl @ git+https://github.com/osoekawaitlab/ol-type-library",
+    "sqlitecollections"
 ]
 
 [project.urls]
@@ -117,7 +118,7 @@ deps =
 commands =
     black src/ tests
     isort src/ tests
-    pytest
+    pytest -m e2e
     pflake8 src/ tests/ stubs/
     mypy src/olstorage --strict --show-traceback
     mypy tests --strict

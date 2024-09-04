@@ -22,7 +22,7 @@ class GenesisLayer:
         return self.backend.has_data(data_id=data_id)
 
     def get_data(self, data_id: DataId) -> Data:
-        raise NotImplementedError
+        return self.backend.get_data(data_id=data_id)
 
 
 def create_genesis_layer(settings: GenesisLayerSettings) -> GenesisLayer:

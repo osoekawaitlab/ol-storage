@@ -14,5 +14,8 @@ class MemoryBackend(BaseBackend):
     def add_data(self, data: Data) -> None:
         self._data[data.id] = data
 
+    def get_data(self, data_id: DataId) -> Data:
+        return self._data[data_id]
+
     def commit(self) -> None:
         pass

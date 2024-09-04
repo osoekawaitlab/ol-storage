@@ -33,3 +33,14 @@ def test_genesis_layer_has_data(mocker: MockerFixture) -> None:
     genesis_layer_instance = genesis_layer.GenesisLayer(backend=backend)
     assert genesis_layer_instance.has_data(data_id=data_id)
     backend.has_data.assert_called_once_with(data_id=data_id)
+
+
+def test_genesis_layer_get_data(mocker: MockerFixture) -> None:
+    backend = mocker.Mock(spec=BaseBackend)
+    data_id = DataId.generate()
+    expected_data = Data(content=b"Test Data")
+    backend.get_data.return_value = expected_data
+    genesis_layer_instance = genesis_layer.GenesisLayer(backend=backend)
+    actual_data = genesis_layer_instance.get_data(data_id=data_id)
+    assert actual_data == expected_data
+    backend.get_data.assert_called_once_with(data_id=data_id)

@@ -13,5 +13,9 @@ class BaseBackend(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_data(self, data_id: DataId) -> Data:
+        raise NotImplementedError
+
+    @abstractmethod
     def commit(self) -> None:
         raise NotImplementedError

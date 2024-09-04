@@ -1,6 +1,7 @@
 from enum import Enum
-from typing import Annotated, Dict, Literal
+from typing import Annotated, Dict, Literal, Union
 
+from oltl import NewOrExistingFilePath
 from oltl.settings import BaseSettings as OltlBaseSettings
 from pydantic import Field
 from pydantic_settings import SettingsConfigDict
@@ -12,6 +13,7 @@ class BaseSettings(OltlBaseSettings):
 
 class BackendType(str, Enum):
     MEMORY = "MEMORY"
+    SQLITE_COLLECTIONS = "SQLITE_COLLECTIONS"
 
 
 class BaseBackendSettings(BaseSettings):
@@ -22,7 +24,12 @@ class MemoryBackendSettings(BaseBackendSettings):
     type: Literal[BackendType.MEMORY] = BackendType.MEMORY
 
 
-BackendSettings = Annotated[MemoryBackendSettings, Field(discriminator="type")]
+class SqliteCollectionsBackendSettings(BaseBackendSettings):
+    type: Literal[BackendType.SQLITE_COLLECTIONS] = BackendType.SQLITE_COLLECTIONS
+    file_path: NewOrExistingFilePath
+
+
+BackendSettings = Annotated[Union[MemoryBackendSettings, SqliteCollectionsBackendSettings], Field(discriminator="type")]
 
 
 class BaseBackendedSettings(BaseSettings):

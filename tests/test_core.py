@@ -2,7 +2,7 @@ import pytest
 from pytest_mock import MockerFixture
 
 from olstorage.core import StorageCore
-from olstorage.errors import DataNotFoundError
+from olstorage.errors import DataNotFoundError, NoSuchNexusLayer
 from olstorage.genesis_layer import GenesisLayer
 from olstorage.models import Data, DataId
 from olstorage.settings import (
@@ -62,3 +62,13 @@ def test_core_get_data_not_exists(mocker: MockerFixture) -> None:
     data_id = DataId.generate()
     with pytest.raises(DataNotFoundError):
         core.get(data_id=data_id)
+
+
+def test_core_raises_no_such_nexus_layer_if_kvs_layer_not_exists(mocker: MockerFixture) -> None:
+    genesis_layer = mocker.Mock(spec=GenesisLayer)
+    core = StorageCore(
+        genesis_layer=genesis_layer,
+        nexus_layers={},
+    )
+    with pytest.raises(NoSuchNexusLayer):
+        core.key_value_store

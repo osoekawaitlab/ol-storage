@@ -22,3 +22,5 @@ def test_olstorage_exports_settings() -> None:
     assert olstorage.GenesisLayerSettings == olstorage.settings.GenesisLayerSettings
     assert olstorage.MemoryBackendSettings == olstorage.settings.MemoryBackendSettings
     assert olstorage.KvsNexusLayerSettings == olstorage.settings.KvsNexusLayerSettings
+    assert olstorage.BaseData == olstorage.models.BaseData
+    assert olstorage.DataT == olstorage.models.DataT

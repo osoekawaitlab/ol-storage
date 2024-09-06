@@ -1,10 +1,11 @@
 from typing import Dict
 
-from .errors import DataNotFoundError
+from .errors import DataNotFoundError, NoSuchNexusLayer
 from .genesis_layer import GenesisLayer, create_genesis_layer
 from .models import Data, DataId
 from .nexus_layers.base import BaseNexusLayer
 from .nexus_layers.factory import create_nexus_layer
+from .nexus_layers.kvs import KvsNexusLayer
 from .settings import NexusLayerType, StorageCoreSettings
 
 
@@ -37,3 +38,11 @@ class StorageCore:
         if not self.genesis_layer.has_data(data_id=data_id):
             raise DataNotFoundError(f"Data with id {data_id} not found")
         return self.genesis_layer.get_data(data_id=data_id)
+
+    @property
+    def key_value_store(self) -> KvsNexusLayer:
+        if NexusLayerType.KVS not in self.nexus_layers or not isinstance(
+            self.nexus_layers[NexusLayerType.KVS], KvsNexusLayer
+        ):
+            raise NoSuchNexusLayer(layer_type=NexusLayerType.KVS)
+        return self.nexus_layers[NexusLayerType.KVS]

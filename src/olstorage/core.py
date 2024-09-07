@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .errors import DataNotFoundError, NoSuchNexusLayer
+from .errors import DataNotFoundError, InvalidNexusLayerType, NoSuchNexusLayer
 from .genesis_layer import GenesisLayer, create_genesis_layer
 from .models import Data, DataId
 from .nexus_layers.base import BaseNexusLayer
@@ -41,8 +41,13 @@ class StorageCore:
 
     @property
     def key_value_store(self) -> KvsNexusLayer:
-        if NexusLayerType.KVS not in self.nexus_layers or not isinstance(
-            self.nexus_layers[NexusLayerType.KVS], KvsNexusLayer
-        ):
+        if NexusLayerType.KVS not in self.nexus_layers:
             raise NoSuchNexusLayer(layer_type=NexusLayerType.KVS)
-        return self.nexus_layers[NexusLayerType.KVS]
+        kvs = self.nexus_layers[NexusLayerType.KVS]
+        if not isinstance(kvs, KvsNexusLayer):
+            raise InvalidNexusLayerType(expected_layer_type=str(NexusLayerType.KVS), actual_layer_type=str(type(kvs)))
+        return kvs
+
+    @property
+    def kvs(self) -> KvsNexusLayer:
+        return self.key_value_store

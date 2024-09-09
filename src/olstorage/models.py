@@ -46,6 +46,10 @@ class TagDescription(NonEmptySingleLineTrimmedString):
     pass
 
 
+class CollectionName(NonEmptySingleLineTrimmedString):
+    pass
+
+
 class Tag(BaseEntity[TagId], BaseUpdateTimeAwareModel):  # type: ignore[misc]
     name: TagName
     description: TagDescription

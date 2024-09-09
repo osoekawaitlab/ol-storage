@@ -1,6 +1,7 @@
 from typing import Any
 
 from ..backends.base import BaseBackend
+from ..models import CollectionName
 from .base import BaseNexusLayer
 
 
@@ -13,7 +14,11 @@ class KvsNexusLayer(BaseNexusLayer):
         return self._backend
 
     def set(self, key: Any, value: Any) -> None:
-        raise NotImplementedError
+        collection_name = CollectionName.from_str("kvs.default")
+        c = self.backend.get_or_create_exact_match_index(
+            collection_name=collection_name, key_type=type(key), value_type=type(value)
+        )
+        c.set(key=key, value=value)
 
     def get(self, key: Any) -> Any:
         raise NotImplementedError
@@ -22,5 +27,4 @@ class KvsNexusLayer(BaseNexusLayer):
         raise NotImplementedError
 
     def __contains__(self, key: Any) -> bool:
-        raise NotImplementedError
         raise NotImplementedError

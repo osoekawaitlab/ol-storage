@@ -1,6 +1,6 @@
 from typing import Any
 
-from ..backends.base import BaseBackend
+from ..backends.base import BaseBackend, BaseExactMatchIndex
 from ..models import CollectionName
 from .base import BaseNexusLayer
 
@@ -15,13 +15,19 @@ class KvsNexusLayer(BaseNexusLayer):
 
     def set(self, key: Any, value: Any) -> None:
         collection_name = CollectionName.from_str("kvs.default")
-        c = self.backend.get_or_create_exact_match_index(
-            collection_name=collection_name, key_type=type(key), value_type=type(value)
-        )
+        c: BaseExactMatchIndex[Any, Any]
+        try:
+            c = self.backend.get_exact_match_index(collection_name=collection_name)
+        except KeyError:
+            c = self.backend.create_exact_match_index(
+                collection_name=collection_name, key_type=type(key), value_type=type(value)
+            )
         c.set(key=key, value=value)
 
     def get(self, key: Any) -> Any:
-        raise NotImplementedError
+        collection_name = CollectionName.from_str("kvs.default")
+        c: BaseExactMatchIndex[Any, Any] = self.backend.get_exact_match_index(collection_name=collection_name)
+        return c.get(key=key)
 
     def __len__(self) -> int:
         raise NotImplementedError

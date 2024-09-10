@@ -21,6 +21,10 @@ class BaseExactMatchIndex(BaseIndex[DataT], Generic[DataT, ExactMatchIndexT]):
     def set(self, key: ExactMatchIndexT, value: DataT) -> None:
         raise NotImplementedError
 
+    @abstractmethod
+    def get(self, key: ExactMatchIndexT) -> DataT | None:
+        raise NotImplementedError
+
 
 class BaseBackend(ABC):
     @abstractmethod
@@ -40,7 +44,11 @@ class BaseBackend(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_or_create_exact_match_index(
+    def create_exact_match_index(
         self, collection_name: CollectionName, key_type: Type[ExactMatchIndexT], value_type: Type[DataT]
     ) -> "BaseExactMatchIndex[DataT, ExactMatchIndexT]":
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_exact_match_index(self, collection_name: CollectionName) -> "BaseExactMatchIndex[DataT, ExactMatchIndexT]":
         raise NotImplementedError

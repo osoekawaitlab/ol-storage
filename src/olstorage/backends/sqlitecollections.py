@@ -53,7 +53,10 @@ class SqliteCollectionsBackend(BaseBackend):
             raise KeyError(f"Data with id {id} not found")
         return res
 
-    def get_or_create_exact_match_index(
+    def create_exact_match_index(
         self, collection_name: CollectionName, key_type: Type[ExactMatchIndexT], value_type: Type[DataT]
     ) -> BaseExactMatchIndex[DataT, ExactMatchIndexT]:
+        raise NotImplementedError
+
+    def get_exact_match_index(self, collection_name: CollectionName) -> BaseExactMatchIndex[DataT, ExactMatchIndexT]:
         raise NotImplementedError

@@ -9,6 +9,12 @@ class MemoryExactMatchIndex(BaseExactMatchIndex[DataT, ExactMatchIndexT], Generi
         super(MemoryExactMatchIndex, self).__init__(collection_name=collection_name)
         self._data: Dict[ExactMatchIndexT, DataT] = {}
 
+    def set(self, key: ExactMatchIndexT, value: DataT) -> None:
+        self._data[key] = value
+
+    def get(self, key: ExactMatchIndexT) -> DataT | None:
+        return self._data.get(key)
+
 
 class MemoryBackend(BaseBackend):
     def __init__(self) -> None:
@@ -27,11 +33,14 @@ class MemoryBackend(BaseBackend):
     def commit(self) -> None:
         pass
 
-    def get_or_create_exact_match_index(
+    def create_exact_match_index(
         self, collection_name: CollectionName, key_type: Type[ExactMatchIndexT], value_type: Type[DataT]
     ) -> BaseExactMatchIndex[DataT, ExactMatchIndexT]:
         if collection_name not in self._exact_match_indexes:
             self._exact_match_indexes[collection_name] = MemoryExactMatchIndex[DataT, ExactMatchIndexT](
                 collection_name=collection_name
             )
+        return self._exact_match_indexes[collection_name]
+
+    def get_exact_match_index(self, collection_name: CollectionName) -> BaseExactMatchIndex[DataT, ExactMatchIndexT]:
         return self._exact_match_indexes[collection_name]

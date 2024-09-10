@@ -17,6 +17,7 @@ class BaseIndex(ABC, Generic[DataT]):
 
 
 class BaseExactMatchIndex(BaseIndex[DataT], Generic[DataT, ExactMatchIndexT]):
+    @abstractmethod
     def set(self, key: ExactMatchIndexT, value: DataT) -> None:
         raise NotImplementedError
 

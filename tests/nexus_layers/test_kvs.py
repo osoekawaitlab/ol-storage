@@ -23,6 +23,16 @@ def test_kvs_nexus_layer_calls_create_exact_match_index(mocker: MockerFixture) -
     )
 
 
+def test_kvs_nexus_layer_get_collection_not_created(mocker: MockerFixture) -> None:
+    backend = mocker.MagicMock(spec=BaseBackend)
+    backend.get_exact_match_index.side_effect = KeyError
+
+    nexus_layer = kvs.KvsNexusLayer(backend=backend)
+
+    actual = nexus_layer.get(key="key0")
+    assert actual is None
+
+
 def test_kvs_nexus_layer_set(mocker: MockerFixture) -> None:
     backend = mocker.MagicMock(spec=BaseBackend)
     nexus_layer = kvs.KvsNexusLayer(backend=backend)

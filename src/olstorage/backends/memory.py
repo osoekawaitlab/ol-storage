@@ -16,7 +16,7 @@ class MemoryExactMatchIndex(BaseExactMatchIndex[DataT, ExactMatchIndexT], Generi
         return self._data.get(key)
 
     def __len__(self) -> int:
-        raise NotImplementedError
+        return len(self._data)
 
 
 class MemoryBackend(BaseBackend):

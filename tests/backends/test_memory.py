@@ -21,6 +21,8 @@ def test_memory_exact_match_index() -> None:
 
     val = Value(value="value0")
     sut = memory.MemoryExactMatchIndex[Value, str](collection_name=CollectionName.from_str("test"))
+    assert len(sut) == 0
     sut.set(key="key0", value=val)
     actual = sut.get(key="key0")
     assert actual == val
+    assert len(sut) == 1

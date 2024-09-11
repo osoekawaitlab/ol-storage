@@ -30,7 +30,12 @@ class KvsNexusLayer(BaseNexusLayer):
         return c.get(key=key)
 
     def __len__(self) -> int:
-        raise NotImplementedError
+        collection_name = CollectionName.from_str("kvs.default")
+        try:
+            c: BaseExactMatchIndex[Any, Any] = self.backend.get_exact_match_index(collection_name=collection_name)
+        except KeyError:
+            return 0
+        return len(c)
 
     def __contains__(self, key: Any) -> bool:
         raise NotImplementedError

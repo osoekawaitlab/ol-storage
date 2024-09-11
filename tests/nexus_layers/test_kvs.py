@@ -43,3 +43,21 @@ def test_kvs_nexus_layer_set(mocker: MockerFixture) -> None:
         ]
     )
     assert actual == backend.get_exact_match_index.return_value.get.return_value
+
+
+def test_kvs_nexus_layer_len_collection_not_created(mocker: MockerFixture) -> None:
+    backend = mocker.MagicMock(spec=BaseBackend)
+    backend.get_exact_match_index.side_effect = KeyError
+
+    nexus_layer = kvs.KvsNexusLayer(backend=backend)
+
+    actual = len(nexus_layer)
+    assert actual == 0
+
+
+def test_kvs_nexus_layer_len_existing_collection(mocker: MockerFixture) -> None:
+    backend = mocker.MagicMock(spec=BaseBackend)
+    nexus_layer = kvs.KvsNexusLayer(backend=backend)
+
+    actual = len(nexus_layer)
+    assert actual == backend.get_exact_match_index.return_value.__len__.return_value

@@ -29,6 +29,10 @@ class BaseExactMatchIndex(BaseIndex[DataT], Generic[DataT, ExactMatchIndexT]):
     def __len__(self) -> int:
         raise NotImplementedError
 
+    @abstractmethod
+    def __contains__(self, key: ExactMatchIndexT) -> bool:
+        raise NotImplementedError
+
 
 class BaseBackend(ABC):
     @abstractmethod

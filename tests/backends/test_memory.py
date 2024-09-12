@@ -26,3 +26,5 @@ def test_memory_exact_match_index() -> None:
     actual = sut.get(key="key0")
     assert actual == val
     assert len(sut) == 1
+    assert "key0" in sut
+    assert "key1" not in sut

@@ -1,4 +1,4 @@
-from typing import Dict, TypeVar
+from typing import Dict, Generic, TypeVar
 
 from oltl import (
     BaseBytes,
@@ -34,6 +34,9 @@ class DataId(Id):
     pass
 
 
+DataIdT = TypeVar("DataIdT", bound=DataId)
+
+
 class TagId(Id):
     pass
 
@@ -64,12 +67,12 @@ class DataContent(BaseBytes):
     pass
 
 
-class BaseData(BaseEntity[DataId], BaseUpdateTimeAwareModel):  # type: ignore[misc]
+class BaseData(BaseEntity[DataIdT], BaseUpdateTimeAwareModel, Generic[DataIdT]):  # type: ignore[misc]
     pass
 
 
-class Data(BaseData):
+class Data(BaseData[DataId]):
     content: DataContent
 
 
-DataT = TypeVar("DataT", bound=BaseData)
+DataT = TypeVar("DataT", bound=BaseData[DataId])

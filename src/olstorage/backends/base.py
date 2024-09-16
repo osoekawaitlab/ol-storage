@@ -3,7 +3,7 @@ from typing import Generic, Hashable, Type, TypeVar
 
 from ..models import BaseData, CollectionName, Data, DataId
 
-DataT = TypeVar("DataT", bound=BaseData)
+DataT = TypeVar("DataT", bound=BaseData[DataId])
 ExactMatchIndexT = TypeVar("ExactMatchIndexT", bound=Hashable)
 
 

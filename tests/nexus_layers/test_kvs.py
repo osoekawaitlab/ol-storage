@@ -89,3 +89,13 @@ def test_kvs_nexus_layer_contains_existing_collection(mocker: MockerFixture) -> 
 
     actual = "key0" in nexus_layer
     assert actual == backend.get_exact_match_index.return_value.__contains__.return_value
+
+
+def test_kvs_nexus_layer_get_collection(mocker: MockerFixture) -> None:
+    backend = mocker.MagicMock(spec=BaseBackend)
+    nexus_layer = kvs.KvsNexusLayer(backend=backend)
+
+    collection_name = CollectionName.from_str("kvs.named")
+    actual = nexus_layer.get_collection(collection_name)
+    backend.get_exact_match_index.assert_called_once_with(collection_name=collection_name)
+    assert actual._index == backend.get_exact_match_index.return_value

@@ -16,8 +16,8 @@ def test_kvs_nexus_layer_calls_create_exact_match_index(mocker: MockerFixture) -
 
     val = Value(value="value0")
 
-    nexus_layer = kvs.KvsNexusLayer(backend=backend)
-    nexus_layer.set(key="key0", value=val)
+    sut = kvs.KvsNexusLayer[str, Value](backend=backend)
+    sut.set(key="key0", value=val)
     backend.create_exact_match_index.assert_called_once_with(
         collection_name=CollectionName.from_str("kvs.default"), key_type=str, value_type=Value
     )

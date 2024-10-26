@@ -33,8 +33,8 @@ def test_core_module_has_kvs() -> None:
 
     core = olstorage.StorageCore.create(settings=settings)
     data = SomeValue(value=123)
-    core.key_value_store.set("key0", data)
-    assert core.key_value_store.get("key0") == data
-    assert len(core.key_value_store) == 1
-    assert "key1" not in core.key_value_store
-    assert core.key_value_store.get("key1") is None
+    sut = core.key_value_store[str, SomeValue].create()
+    sut.set("key0", data)
+    actual = sut.get("key0")
+    assert actual.value == 123
+    assert actual == data

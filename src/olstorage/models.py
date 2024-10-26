@@ -1,4 +1,4 @@
-from typing import Dict, Generic, TypeVar
+from typing import Dict, Generic, Hashable, TypeVar
 
 from oltl import (
     BaseBytes,
@@ -35,6 +35,7 @@ class DataId(Id):
 
 
 DataIdT = TypeVar("DataIdT", bound=DataId)
+KeyT = TypeVar("KeyT", bound=Hashable)
 
 
 class TagId(Id):

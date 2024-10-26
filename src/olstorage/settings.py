@@ -40,6 +40,7 @@ class GenesisLayerSettings(BaseBackendedSettings): ...
 
 
 class NexusLayerType(str, Enum):
+    SEQUENCE = "SEQUENCE"
     KVS = "KVS"
 
 
@@ -51,7 +52,11 @@ class KvsNexusLayerSettings(BaseNexusLayerSettings):
     type: Literal[NexusLayerType.KVS] = NexusLayerType.KVS
 
 
-NexusLayerSettings = Annotated[KvsNexusLayerSettings, Field(discriminator="type")]
+class SequenceNexusLayerSettings(BaseNexusLayerSettings):
+    type: Literal[NexusLayerType.SEQUENCE] = NexusLayerType.SEQUENCE
+
+
+NexusLayerSettings = Annotated[Union[KvsNexusLayerSettings, SequenceNexusLayerSettings], Field(discriminator="type")]
 
 
 class StorageCoreSettings(BaseSettings):
